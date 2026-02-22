@@ -1,0 +1,33 @@
+name: Daily Repository Update - 23f3001514@ds.study.iitm.ac.in
+
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update daily log for 23f3001514@ds.study.iitm.ac.in
+        run: |
+          mkdir -p logs
+          echo "Daily update - $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> logs/daily-update.log
+          echo "---" >> logs/daily-update.log
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: daily automated update $(date -u '+%Y-%m-%d') [23f3001514@ds.study.iitm.ac.in]"
+          git push
